@@ -6,8 +6,19 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Confirm php version
 RUN php -v
 
+RUN apt-get -y update && apt-get -y install \
+gosu \
+unzip
+
 # Install composer
-RUN apt-get -y update && apt-get -y install unzip
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 RUN composer self-update
+
+# Set workspace
+RUN mkdir /work
+
+# Set Entrypoint
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
