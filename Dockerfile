@@ -16,9 +16,6 @@ RUN mv composer.phar /usr/local/bin/composer
 RUN composer self-update
 RUN composer --version
 
-# Set workspace
-RUN mkdir /work
-
 # Set Entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
