@@ -1,27 +1,22 @@
 .DEFAULT_GOAL := help
 
-define apply_patch
-	@if test -z $(hash); then \
-	echo "not found git revision hash string."; \
-		exit 1; \
-	fi
-	git checkout $(1) && git cherry-pick $(hash) && git push origin $(1) --force-with-lease
-endef
-
-define replace_master
+define build_specific_version
 	git checkout master
-	git branch -D $(1)
+	git branch -D $(1) || true
 	git checkout -b $(1)
+	sed -i -e "s/FROM php:latest/FROM php:$(1)/" Dockerfile
+	git commit -am "Change base image to php:$(1)"
 	git push origin $(1) --force-with-lease
+	git checkout master
 endef
 
 .PHONY: build
 build: ## build all branches
-	$(call apply_patch,"7.0")
-	$(call apply_patch,"7.1")
-	$(call apply_patch,"7.2")
-	$(call apply_patch,"7.3")
-	$(call replace_master,"7.4")
+	$(call build_specific_version,"7.0")
+	$(call build_specific_version,"7.1")
+	$(call build_specific_version,"7.2")
+	$(call build_specific_version,"7.3")
+	$(call build_specific_version,"7.4")
 
 
 
