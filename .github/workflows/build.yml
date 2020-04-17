@@ -1,0 +1,24 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: setup
+      run: |
+        git config --global user.name "longkey1"
+        git config --global user.email "longkey1@users.noreply.github.com"
+        git fetch --all
+    - name: build
+      run: |
+        make build repo=php tag=7.0
+        make build repo=php tag=7.1
+        make build repo=php tag=7.2
+        make build repo=php tag=7.3
+        make build repo=php tag=7.4

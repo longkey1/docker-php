@@ -1,22 +1,18 @@
 .DEFAULT_GOAL := help
 
-define build_specific_version
+define build_specific_version_branch
 	git checkout master
-	git branch -D $(1) || true
-	git checkout -b $(1)
-	sed -i -e "s/FROM php:latest/FROM php:$(1)/" Dockerfile
-	git commit -am "Change base image to php:$(1)"
-	git push origin $(1) --force-with-lease
+	git branch -D $(2) || true
+	git checkout -b $(2)
+	sed -i -e "s@FROM $(1):latest@FROM $(1):$(2)@" Dockerfile
+	git commit -am "Change base image to $(1):$(2)"
+	git push origin $(2) --force-with-lease
 	git checkout master
 endef
 
 .PHONY: build
-build: ## build all branches
-	$(call build_specific_version,"7.0")
-	$(call build_specific_version,"7.1")
-	$(call build_specific_version,"7.2")
-	$(call build_specific_version,"7.3")
-	$(call build_specific_version,"7.4")
+build: ## build_specific_version_branch
+	$(call build_specific_version_branch,$(repo),$(tag))
 
 
 
