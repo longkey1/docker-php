@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 repo := php
-tags := 7.0 7.1 7.2 7.3 7.4
+tags := 7.0 7.1 7.2 7.3 7.4 8.0
 
 define build_git_branch
 	git checkout master
