@@ -19,8 +19,11 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN php -v
 
 # Install composer
-RUN apt-get -y install unzip
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
-RUN composer self-update
+COPY --from=composer:1 /usr/bin/composer /usr/bin/composer1
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer2
+RUN ln -s /usr/bin/composer2 /usr/bin/composer
+
+# Confirm composer version
 RUN composer --version
+RUN composer1 --version
+RUN composer2 --version
