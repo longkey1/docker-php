@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.PAT}}
       - name: setup
         run: |
           git config --global user.name "longkey1"
