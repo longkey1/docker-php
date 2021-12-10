@@ -3,8 +3,11 @@ FROM php:latest
 # Fix frontend not set error
 ARG DEBIAN_FRONTEND=noninteractive
 
+# Update apt packages
+RUN apt-get -y update
+
 # Install gosu
-RUN apt-get -y update && apt-get -y install gosu
+RUN apt-get -y install gosu
 
 # Make working directory
 ENV WORK_DIR=/work
@@ -19,7 +22,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 RUN php -v
 
 # Install zip extension
-RUN apt-get -y update && apt-get -y install libzip-dev
+RUN apt-get -y install libzip-dev
 RUN docker-php-ext-install zip
 
 # Install composer
@@ -31,6 +34,9 @@ RUN ln -s /usr/bin/composer2 /usr/bin/composer
 RUN composer --version
 RUN composer1 --version
 RUN composer2 --version
+
+# Install gnupg wget for installing phive
+RUN apt-get -y install gnupg wget
 
 # Install phive
 RUN wget -O phive.phar https://phar.io/releases/phive.phar
