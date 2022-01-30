@@ -1,4 +1,4 @@
-name: publish
+name: build_and_publish_image
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build_and_publish:
+  build_and_publish_image:
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: php

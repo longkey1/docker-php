@@ -1,23 +1,23 @@
-name: build
+name: make_branches
 
 on:
   push:
     branches:
       - master
-  schedule:
-    - cron: '0 0 * * 0'
 
 jobs:
-  build:
+  make_branches:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           token: ${{secrets.GH_PAT}}
+
       - name: setup
         run: |
           git config --global user.name "longkey1"
           git config --global user.email "longkey1@users.noreply.github.com"
           git fetch --all
+
       - name: build
         run: make build
