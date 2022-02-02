@@ -2,7 +2,7 @@ name: auto_update_readme
 
 on:
   schedule:
-    - cron: '0 15 1 * *' # JST="0 0 2 * *"
+    - cron: '0 15 4 * *' # JST="0 0 5 * *"
 
 jobs:
   keeper:
