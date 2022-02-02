@@ -2,7 +2,7 @@ name: auto_update_readme
 
 on:
   schedule:
-    - cron: '0 15 1 * *' # JST="0 0 1 * *"
+    - cron: '0 15 1 * *' # JST="0 0 2 * *"
 
 jobs:
   keeper:
@@ -14,6 +14,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          token: ${{secrets.GH_PAT}}
 
       - name: Set updated date
         run: |
