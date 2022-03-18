@@ -1,4 +1,4 @@
-name: make_branches
+name: build_branches
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup git
         run: |
