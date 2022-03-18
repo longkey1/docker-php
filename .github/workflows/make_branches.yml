@@ -4,21 +4,43 @@ on:
   push:
     branches:
       - master
+  schedule:
+    - cron: '0 15 4 * *' # JST="0 0 5 * *"
 
 jobs:
   make_branches:
     runs-on: ubuntu-latest
     steps:
+      - name: Set timezone
+        run: |
+          echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set updated date
+        run: |
+          echo "UPDATED=$(date --iso-8601=seconds)" >> ${GITHUB_ENV}
+
+      - name: Update README
+        run: |
+          envsubst '${UPDATED}' < README.md.dist > README.md
+
+      - name: Commit & Push
+        uses: stefanzweifel/git-auto-commit-action@v4.2.0
+        with:
+          commit_message: "docs: update README by auto commit"
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GH_PAT }}
+          persist-credentials: false
 
-      - name: setup
+      - name: Setup git
         run: |
           git config --global user.name "longkey1"
           git config --global user.email "longkey1@users.noreply.github.com"
           git fetch --all
 
-      - name: build
+      - name: Build branches
         run: make build
