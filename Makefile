@@ -17,6 +17,7 @@ endef
 
 .PHONY: build
 build: ## build all tags
+	git fetch --all
 	$(foreach tag,$(tags),$(call build_git_branch,$(tag)))
 
 
