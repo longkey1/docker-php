@@ -10,13 +10,15 @@ on:
 jobs:
   make_branches:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Set timezone
         run: |
           echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set updated date
         run: |
@@ -26,21 +28,27 @@ jobs:
         run: |
           envsubst '${UPDATED}' < README.md.dist > README.md
 
-      - name: Commit & Push
-        uses: stefanzweifel/git-auto-commit-action@v4.2.0
-        with:
-          commit_message: "docs: update README by auto commit"
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT }}
-
       - name: Setup git
         run: |
           git config --global user.name "longkey1"
           git config --global user.email "longkey1@users.noreply.github.com"
           git fetch --all
+
+      - name: Commit & Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: update README by auto commit"
+
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+
+      - name: Checkout again
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Build branches
         run: make build
