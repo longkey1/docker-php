@@ -14,19 +14,16 @@ jobs:
       contents: write
     steps:
       - name: Set timezone
-        run: |
-          echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
+        run: echo "TZ=Asia/Tokyo" >> ${GITHUB_ENV}
 
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set updated date
-        run: |
-          echo "UPDATED=$(date --iso-8601=seconds)" >> ${GITHUB_ENV}
+        run: echo "UPDATED=$(date --iso-8601=seconds)" >> ${GITHUB_ENV}
 
       - name: Update README
-        run: |
-          envsubst '${UPDATED}' < README.md.dist > README.md
+        run: envsubst '${UPDATED}' < README.md.dist > README.md
 
       - name: Setup git
         run: |
