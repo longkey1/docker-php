@@ -12,7 +12,6 @@ else
   useradd -u ${USER_ID} -o -d ${WORK_DIR} worker > /dev/null 2>&1
   groupmod -g ${GROUP_ID} worker > /dev/null 2>&1
 fi
-
 export HOME=/work
 
 chown worker:worker ${WORK_DIR}
