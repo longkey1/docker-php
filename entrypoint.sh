@@ -14,6 +14,6 @@ else
 fi
 export HOME=/work
 
-chown worker:worker ${WORK_DIR}
+chown ${USER_ID}:${GROUP_ID} ${WORK_DIR}
 
 exec /usr/sbin/gosu worker "$@"
