@@ -1,4 +1,4 @@
-FROM php:latest
+FROM php:8.5
 
 # Fix frontend not set error
 ARG DEBIAN_FRONTEND=noninteractive
